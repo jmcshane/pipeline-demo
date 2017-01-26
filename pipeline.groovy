@@ -16,11 +16,7 @@ node('master') {
 node('maven') {
   def mvnHome = "/usr/share/maven/"
   def mvnCmd = "${mvnHome}bin/mvn"
-
-  stage('SCM Checkout') {
-    checkout scm
-  }
-
+  checkout scm
 
   stage('Build') {
 
