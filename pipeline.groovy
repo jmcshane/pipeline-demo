@@ -21,7 +21,7 @@ node('maven') {
   }
   stage('Build') {
 
-    sh "${mvnCmd} clean --batch-mode install -DskipTests=true"
+    sh "MAVEN_OPTS='-Xmx256m -Xms256m' ${mvnCmd} clean --batch-mode install -DskipTests=true"
 
   }
 
