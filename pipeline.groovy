@@ -16,8 +16,9 @@ node('master') {
 node('maven') {
   def mvnHome = "/usr/share/maven/"
   def mvnCmd = "${mvnHome}bin/mvn"
-  checkout scm
-
+  stage('Scm Checkout') {
+  	checkout scm
+  }
   stage('Build') {
 
     sh "${mvnCmd} clean install -DskipTests=true"
