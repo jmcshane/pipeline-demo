@@ -11,6 +11,44 @@ node('master') {
   env.STAGE1 = "${projectBase}-dev"
   env.STAGE2 = "${projectBase}-qa"
   env.STAGE3 = "${projectBase}-prod"
+}
 
-  sh "${env.OC_CMD} whoami"
+node('maven') {
+  def mvnHome = "/usr/share/maven/"
+  def mvnCmd = "${mvnHome}bin/mvn"
+
+  stage('SCM Checkout') {
+    checkout scm
+  }
+
+
+  stage('Build') {
+
+    sh "${mvnCmd} clean install -DskipTests=true -f ${pomFileLocation}"
+
+  }
+
+  stage('Build Image') {
+
+  	sh "find target -name 'pipeline*jar' > pipelineFile"
+  	def file=readFile('pipelineFile')
+  	sh "${OC_CMD} start-build ${env.APP_NAME} --from-file=${file} --wait=true --follow=true"
+  }
+
+  input "Promote to QA?"
+
+  stage('Promote to QA') {
+    sh """
+    ${env.OC_CMD} tag ${env.STAGE1}/${env.APP_NAME}:latest ${env.STAGE2}/${env.APP_NAME}:latest
+    """
+
+    input "Promote Application to Prod?"	
+  }
+
+  stage('Promote To Prod') {
+    sh """
+    ${env.OC_CMD} tag ${env.STAGE1}/${env.APP_NAME}:latest ${env.STAGE3}/${env.APP_NAME}:latest
+    """
+
+  }
 }

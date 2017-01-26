@@ -18,6 +18,20 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
+
+  <repositories>
+    <repository>
+      <id>my-internal-site</id>
+      <url>http://nexus.healthpartners.com/nexus/content/repositories/central/</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>my-internal-site</id>
+      <url>http://nexus.healthpartners.com/nexus/content/repositories/central/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
