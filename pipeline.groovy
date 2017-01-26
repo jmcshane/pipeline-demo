@@ -21,7 +21,7 @@ node('maven') {
   }
   stage('Build') {
 
-    sh "${mvnCmd} clean install -DskipTests=true"
+    sh "${mvnCmd} clean --batch-mode install -DskipTests=true"
 
   }
 
